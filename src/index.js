@@ -1,125 +1,221 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-function Header() {
+const pizzaData = [
+  {
+    name: "Focaccia",
+    ingredients: "Bread with italian olive oil and rosemary",
+    price: 6,
+    photoName: "pizzas/focaccia.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Margherita",
+    ingredients: "Tomato and mozarella",
+    price: 10,
+    photoName: "pizzas/margherita.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Spinaci",
+    ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
+    price: 12,
+    photoName: "pizzas/spinaci.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Funghi",
+    ingredients: "Tomato, mozarella, mushrooms, and onion",
+    price: 12,
+    photoName: "pizzas/funghi.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Salamino",
+    ingredients: "Tomato, mozarella, and pepperoni",
+    price: 15,
+    photoName: "pizzas/salamino.jpg",
+    soldOut: true,
+  },
+  {
+    name: "Pizza Prosciutto",
+    ingredients: "Tomato, mozarella, ham, aragula, and burrata cheese",
+    price: 18,
+    photoName: "pizzas/prosciutto.jpg",
+    soldOut: false,
+  },
+];
+
+function Header({ isOpen }) {
   return (
-    <h1 style={{ color: "orange", fontSize: "48px", textTransform: "uppercase", textAlign: "center" }}>
-      Iggy's Pizza Co.
-    </h1>
+    <header style={{ textAlign: "center", padding: "30px 0" }}>
+      <h1
+        style={{
+          fontSize: "60px",
+          color: "#f5c518",
+          margin: 0,
+          letterSpacing: "2px",
+          fontFamily: "'Cinzel Decorative', serif",
+          fontWeight: 700,
+        }}
+      >
+        Iggy's Pizza Co.
+      </h1>
+      {isOpen && (
+        <p
+          style={{
+            color: "#ffed8a",
+            fontStyle: "italic",
+            marginTop: "10px",
+            fontFamily: "'Playfair Display', serif",
+            fontSize: "22px",
+          }}
+        >
+          Authentic Italian Cuisine
+        </p>
+      )}
+    </header>
   );
 }
 
-function Greeting({ name, signedIn }) {
+function Pizza({ name, ingredients, price, photoName, soldOut }) {
   return (
-    <div style={{ textAlign: "center", margin: "10px 0" }}>
-      {signedIn ? <h2>Welcome back {name}!</h2> : <h2>Please login</h2>}
-    </div>
-  );
-}
-
-function Pizza(props) {
-  return (
-    <div className="pizza" style={{ 
-      border: "1px solid #4A4642", 
-      borderRadius: "12px", 
-      padding: "20px", 
-      textAlign: "center", 
-      margin: "10px",
-      width: "250px"
-    }}>
-      <img 
-        src={props.src} 
-        alt={props.name} 
-        width="200" 
-        style={{ 
-          borderRadius: "20px",
-          marginBottom: "10px" 
-        }} 
+    <div
+      style={{
+        backgroundColor: "#2a2a2a",
+        border: "1px solid #444",
+        borderRadius: "16px",
+        width: "100%",
+        maxWidth: "300px",
+        height: "430px",
+        padding: "20px",
+        textAlign: "center",
+        transition: "0.3s",
+        opacity: soldOut ? 0.5 : 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <img
+        src={photoName}
+        alt={name}
+        style={{
+          width: "100%",
+          height: "180px",
+          objectFit: "cover",
+          borderRadius: "12px",
+          marginBottom: "10px",
+        }}
       />
-      <h3>{props.name}</h3>
-      <p>{props.ingredients}</p>
-      <p style={{ fontWeight: "bold" }}>${props.price}</p>
+      <h3 style={{ color: "#f5c518", marginBottom: "10px" }}>{name}</h3>
+      <p style={{ marginBottom: "5px" }}>{ingredients}</p>
+      <p style={{ fontWeight: "bold", color: "#ffed8a" }}>
+        {soldOut ? "SOLD OUT" : "$" + price}
+      </p>
     </div>
   );
 }
-
 
 function Menu() {
-  const pizzas = [
-    { name: "Focaccia", ingredients: "Bread with Italian olive oil and rosemary", price: 6, src: "/pizzas/focaccia.jpg" },
-    { name: "Pizza Margherita", ingredients: "Tomato and mozzarella", price: 10, src: "/pizzas/margherita.jpg" },
-    { name: "Pizza Spinaci", ingredients: "Tomato, mozzarella, spinach, and ricotta cheese", price: 12, src: "/pizzas/spinaci.jpg" },
-    { name: "Pizza Funghi", ingredients: "Tomato, mozzarella, mushrooms, and onion", price: 12, src: "/pizzas/funghi.jpg" },
-    { name: "Pizza Salamino", ingredients: "Tomato, mozzarella, and pepperoni", price: 15, src: "/pizzas/salamino.jpg" },
-    { name: "Pizza Prosciutto", ingredients: "Tomato, mozzarella, ham, arugula, and burrata cheese", price: 18, src: "/pizzas/prosciutto.jpg" }
-  ];
-
-  const menuStyle = {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    padding: "40px",
-    gap: "20px"
-  };
-
   return (
-    <div className="menu" style={{ textAlign: "center" }}>
-      <h2 style={{ marginBottom: "30px" }}>Our Menu</h2>
-      <div style={menuStyle}>
-        {pizzas.map(pizza => (
-          <Pizza 
+    <main style={{ textAlign: "center", marginTop: "40px" }}>
+      <h2
+        style={{
+          color: "#f5c518",
+          fontSize: "40px",
+          marginBottom: "20px",
+          fontFamily: "'Cinzel Decorative', serif",
+          fontWeight: 700,
+        }}
+      >
+        Our Menu
+      </h2>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)", // 3 flexible columns
+          gap: "40px",                           // space between cards
+          justifyItems: "center",                // centers each card
+          alignItems: "start",
+          width: "90%",                          // prevent overflow
+          maxWidth: "1100px",                    // keeps nice center alignment
+          margin: "0 auto",                      // centers grid itself
+        }}
+      >
+        {pizzaData.map((pizza) => (
+          <Pizza
             key={pizza.name}
             name={pizza.name}
             ingredients={pizza.ingredients}
             price={pizza.price}
-            src={pizza.src}
+            photoName={pizza.photoName}
+            soldOut={pizza.soldOut}
           />
         ))}
       </div>
+    </main>
+  );
+}
+
+
+function Order() {
+  return (
+    <div style={{ textAlign: "center", marginTop: "10px" }}>
+      <p style={{ color: "#f5c518", marginBottom: "10px" }}>
+        We're currently open!
+      </p>
+      <button
+        style={{
+          backgroundColor: "#f5c518",
+          color: "#1e1e1e",
+          border: "none",
+          padding: "10px 25px",
+          borderRadius: "8px",
+          fontWeight: "bold",
+          cursor: "pointer",
+        }}
+      >
+        Order Now
+      </button>
     </div>
   );
 }
 
-function Footer() {
-  const now = new Date();
-  const hour = now.getHours();
-  const isOpen = hour >= 10 && hour < 22;
-
-  const footerStyle = {
-    textAlign: "center",
-    padding: "20px",
-    backgroundColor: "#ffb84d",
-    color: "#fff",
-    fontWeight: "bold",
-    marginTop: "40px"
-  };
-
+function Footer({ isOpen }) {
   return (
-    <footer style={footerStyle}>
-      {isOpen ? "We're currently open" : "Sorry, we're closed"}
+    <footer
+      style={{
+        textAlign: "center",
+        padding: "30px",
+        borderTop: "2px solid #f5c518",
+        marginTop: "40px",
+      }}
+    >
+      {isOpen ? <Order /> : <p style={{ color: "#aaa" }}>Sorry, we're closed.</p>}
     </footer>
   );
 }
 
-function ProfileCard({name, age}) {
-  return (
-    <div style={{ textAlign: "center", margin: "20px" }}>
-      <h1>{name}</h1>
-      <h2>{age}</h2>
-    </div>
-  );
-}
-
-
 function App() {
+  const hour = new Date().getHours();
+  const isOpen = hour >= 10 && hour < 22;
+
   return (
-    <div className="container">
-      <Header />
-      <Greeting name="Iggy" signedIn={true} />
-      <ProfileCard name="Iggy" age={18} />
+    <div
+      style={{
+        backgroundColor: "#1e1e1e",
+        color: "#f5f5f5",
+        fontFamily: "'Playfair Display', serif",
+        minHeight: "100vh",
+        margin: 0,
+        padding: "20px",
+      }}
+    >
+      <Header isOpen={isOpen} />
       <Menu />
-      <Footer />
+      <Footer isOpen={isOpen} />
     </div>
   );
 }
